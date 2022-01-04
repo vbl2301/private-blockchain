@@ -89,7 +89,6 @@ You can check in your terminal the the Express application is listening in the P
 
 1. `block.js` file. In the `Block` class we are going to implement the method:
     `validate()`. 
-    /**
      *  The `validate()` method will validate if the block has been tampered or not.
      *  Been tampered means that someone from outside the application tried to change
      *  values in the block data as a consecuence the hash of the block should be different.
@@ -100,10 +99,8 @@ You can check in your terminal the the Express application is listening in the P
      *  4. Compare if the auxiliary hash value is different from the calculated one.
      *  5. Resolve true or false depending if it is valid or not.
      *  Note: to access the class values inside a Promise code you need to create an auxiliary value `let self = this;`
-     */
 2. `block.js` file. In the `Block` class we are going to implement the method:
     `getBData()`.
-    /**
      *  Auxiliary Method to return the block body (decoding the data)
      *  Steps:
      *  
@@ -111,10 +108,8 @@ You can check in your terminal the the Express application is listening in the P
      *  2. Because data is a javascript object use JSON.parse(string) to get the Javascript Object
      *  3. Resolve with the data and make sure that you don't need to return the data for the `genesis block` 
      *     or Reject with an error.
-     */
 3. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `_addBlock(block)`.
-    /**
      * _addBlock(block) will store a block in the chain
      * @param {*} block 
      * The method will return a Promise that will resolve with the block added
@@ -125,20 +120,16 @@ You can check in your terminal the the Express application is listening in the P
      * to update the `this.height`
      * Note: the symbol `_` in the method name indicates in the javascript convention 
      * that this method is a private method. 
-     */
 4. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `requestMessageOwnershipVerification(address)`
-    /**
      * The requestMessageOwnershipVerification(address) method
      * will allow you  to request a message that you will use to
      * sign it with your Bitcoin Wallet (Electrum or Bitcoin Core)
      * This is the first step before submit your Block.
      * The method return a Promise that will resolve with the message to be signed
      * @param {*} address 
-     */
 5. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `submitStar(address, message, signature, star)`
-    /**
      * The submitStar(address, message, signature, star) method
      * will allow users to register a new Block with the star object
      * into the chain. This method will resolve with the Block added or
@@ -154,31 +145,24 @@ You can check in your terminal the the Express application is listening in the P
      * @param {*} message 
      * @param {*} signature 
      * @param {*} star 
-     */
 6. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `getBlockByHash(hash)`
-    /**
      * This method will return a Promise that will resolve with the Block
      *  with the hash passed as a parameter.
      * Search on the chain array for the block that has the hash.
      * @param {*} hash 
-     */
 7. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `getStarsByWalletAddress (address)`
-    /**
      * This method will return a Promise that will resolve with an array of Stars objects existing in the chain 
      * and are belongs to the owner with the wallet address passed as parameter.
      * 
      * @param {*} address 
-     */
 8. `blockchain.js` file. In the `Blockchain` class we are going to implement the method:
     `validateChain()`
-    /**
      * This method will return a Promise that will resolve with the list of errors when validating the chain.
      * Steps to validate:
      * 1. You should validate each block using `validateBlock`
      * 2. Each Block should check the with the previousBlockHash
-     */
 
 ## How to test your application functionalities?
 
