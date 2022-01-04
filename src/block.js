@@ -42,7 +42,8 @@
              currentHash = self.hash;
              self.hash = null;                        
              // Recalculate the hash of the Block
-             validateHash = SHA256(JSON.stringify(self))
+             validateHash = SHA256(JSON.stringify(self));
+             self.hash = currentHash;
              // Comparing if the hashes changed
              if (currentHash != validateHash){
                 // Returning the Block is not valid
@@ -75,10 +76,10 @@
             parsedData = JSON.parse(decodedData);
             // Resolve with the data if the object isn't the Genesis block
             if (this.previousBlockHash == null){
-                return reject(Error("Genesis block"))
+                reject(Error("Genesis block"));
             }
             else{
-                return resolve(parsedData)
+                resolve(parsedData);
             }
         });
      }
