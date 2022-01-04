@@ -1,3 +1,17 @@
+## Additional information to be reviewed by Udacity Instructors
+
+Image of tested endpoints:
+1. http://localhost:8000/block/height/0:
+    ![http://localhost:8000/block/height/0](https://github.com/vbl2301/private-blockchain/blob/main/endpoint_tests/block_height.png?raw=true)
+2. http://localhost:8000/requestValidation:
+    ![http://localhost:8000/requestValidation](https://github.com/vbl2301/private-blockchain/blob/main/endpoint_tests/requestValidation.png?raw=true)
+3. http://localhost:8000/submitstar
+    ![http://localhost:8000/submitstar](https://github.com/vbl2301/private-blockchain/blob/main/endpoint_tests/submitstar.png?raw=true)
+4. http://localhost:8000/blocks/wallet_address
+    ![http://localhost:8000/blocks/wallet_address](https://github.com/vbl2301/private-blockchain/blob/main/endpoint_tests/blocks_wallet.png?raw=true)
+5.  http://localhost:8000/validateChain
+    ![http://localhost:8000/validateChain](https://github.com/vbl2301/private-blockchain/blob/main/endpoint_tests/validateChain.png?raw=true)
+
 # Private Blockchain Application
 
 You are starting your journey as a Blockchain Developer, this project allows you to demonstrate
