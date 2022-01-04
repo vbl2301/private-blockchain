@@ -39,10 +39,10 @@
          let self = this;
          return new Promise((resolve, reject) => {
              // Save in auxiliary variable the current block hash
-             currentHash = self.hash;
+             let currentHash = self.hash;
              self.hash = null;                        
              // Recalculate the hash of the Block
-             validateHash = SHA256(JSON.stringify(self));
+             let validateHash = SHA256(JSON.stringify(self));
              self.hash = currentHash;
              // Comparing if the hashes changed
              if (currentHash != validateHash){
@@ -65,21 +65,21 @@
       *  3. Resolve with the data and make sure that you don't need to return the data for the `genesis block` 
       *     or Reject with an error.
       */
-     getBData() {
+      getBData() {
         let self = this;
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             // Getting the encoded data saved in the Block
-            data = this.body;
+            let data = self.body;
             // Decoding the data to retrieve the JSON representation of the object
-            decodedData = hex2ascii(data);
+            let decodedData = hex2ascii(data);
             // Parse the data to an object to be retrieve.
-            parsedData = JSON.parse(decodedData);
+            let parsedData = JSON.parse(decodedData);
             // Resolve with the data if the object isn't the Genesis block
-            if (this.previousBlockHash == null){
+            if (self.previousBlockHash == null){
                 reject(Error("Genesis block"));
             }
             else{
-                resolve(parsedData);
+                resolve(parsedData.data);
             }
         });
      }

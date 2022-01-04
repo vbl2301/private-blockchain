@@ -63,8 +63,27 @@
       */
      _addBlock(block) {
          let self = this;
-         return new Promise(async (resolve, reject) => {
-            
+         return new Promise(async (resolve, reject) => {            
+            let errorLog = this.validateChain()
+            if(errorLog.length > 0){
+                return reject(Error(errorLog))
+            }
+            else{
+                block.height = self.chain.length;
+                block.time = new Date().getTime().toString().slice(0,-3);
+                if(block.height > 0){
+                    block.previousBlockHash = self.chain[block.height-1].hash;
+                }
+                block.hash = SHA256(JSON.stringify(block)).toString();
+                if (block.hash != null){
+                    self.chain.push(block);
+                    self.chain.height++;
+                    resolve(block)
+                }
+                else{
+                    reject(Error("Failed to add the block into the blockchain"))
+                }
+            }
          });
      }
  
@@ -78,7 +97,7 @@
       */
      requestMessageOwnershipVerification(address) {
          return new Promise((resolve) => {
-             
+             resolve(`${address}:${new Date().getTime().toString().slice(0,-3)}:starRegistry`)
          });
      }
  
@@ -102,7 +121,19 @@
      submitStar(address, message, signature, star) {
          let self = this;
          return new Promise(async (resolve, reject) => {
-             
+            let ownershipTime = parseInt(message.split(':')[1])
+            let currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
+            if (currentTime - ownershipTime >  300){
+                reject(Error("Time elapsed since message ownership verification has expired, please request a new one"))
+            }
+            else{
+                if (bitcoinMessage.verify(message, address, signature)){
+                    resolve(await this._addBlock(new BlockClass.Block({data: {"owner":address, "star":star}})))
+                }
+                else{
+                    reject(Error("Message not verified"))
+                }
+            }
          });
      }
  
@@ -115,7 +146,7 @@
      getBlockByHash(hash) {
          let self = this;
          return new Promise((resolve, reject) => {
-            
+            resolve(self.chain.filter(block => block.hash === hash))
          });
      }
  
@@ -146,10 +177,16 @@
          let self = this;
          let stars = [];
          return new Promise((resolve, reject) => {
-             
-         });
+            self.chain.filter(block => block.height > 0).forEach(async (block) => {
+                let decodedData = await block.getBData();
+                if(decodedData.owner == address){
+                    stars.push(decodedData)
+                }
+            });
+            resolve(stars)
+        });
      }
- 
+
      /**
       * This method will return a Promise that will resolve with the list of errors when validating the chain.
       * Steps to validate:
@@ -160,7 +197,22 @@
          let self = this;
          let errorLog = [];
          return new Promise(async (resolve, reject) => {
-             
+            for (var i = 0; i < self.chain.length; i++){
+                let block = self.chain[i]
+                if (!await block.validate()){
+                    errorLog.push(`Fail to validate Block: ${block.hash}`)
+                }
+                
+                if(block.height == 0 && block.previousBlockHash != null){
+                    errorLog.push(`Genesis Block previous hash check failed`)
+                }
+                
+                if(block.height > 0 && block.previousBlockHash != self.chain[i-1].hash){
+                    errorLog.push(`Hash of previous block do not match for the block: ${block.hash}`);
+                }
+            }
+
+            resolve(errorLog)
          });
      }
  
